@@ -127,7 +127,7 @@ msgstr "%.1f° O"
 
 #, python-format
 msgid "%.1f° W"
-msgstr "%.1f° O"
+msgstr "%.1f° W"
 
 #, python-format
 msgid "%.2f GB"
