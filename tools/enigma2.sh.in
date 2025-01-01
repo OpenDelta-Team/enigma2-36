@@ -25,6 +25,7 @@ fi
 df -P | grep -v "tmpfs " | awk '{print $6}' | tail -n +3 > /tmp/upgrade_mountpoints.txt
 while read line; do
 	if [  -f $line/var/lib/opkg/info/enigma-info.list ]; then
+		sed -i "s#^${line}##g" $line/var/lib/opkg/info/enigma-info.list
 		mv $line/var/lib/opkg/info/enigma-info.* /var/lib/opkg/info
 		mv $line/usr/lib/enigma.info /usr/lib
 		f=
