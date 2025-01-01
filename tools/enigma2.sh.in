@@ -24,6 +24,10 @@ fi
 # enigma-info opkg bug fix
 df -P | grep -v "tmpfs " | awk '{print $6}' | tail -n +3 > /tmp/upgrade_mountpoints.txt
 while read line; do
+	# skip VU+ multiboot mounts
+	if [ -f $line/startup.cpio.gz ]; then
+		continue
+	fi
 	if [  -f $line/var/lib/opkg/info/enigma-info.list ]; then
 		sed -i "s#^${line}##g" $line/var/lib/opkg/info/enigma-info.list
 		mv $line/var/lib/opkg/info/enigma-info.* /var/lib/opkg/info
