@@ -207,7 +207,7 @@ keyDescriptions = [{  # id=0 - dmm0 remote directory, DM8000.
 	KEYIDS["KEY_SLOW"]: ("SLOW",),
 	KEYIDS["KEY_STOP"]: ("STOP",),
 	KEYIDS["KEY_SUBTITLE"]: ("SUBTITLE",),
-	KEYIDS["KEY_SUSPEND"]: ("SUSPEND",)
+	KEYIDS["KEY_SUSPEND"]: ("SUSPEND",),
 	KEYIDS["KEY_SWITCHVIDEOMODE"]: ("VMODE",),
 	KEYIDS["KEY_TEXT"]: ("TEXT",),
 	KEYIDS["KEY_TIME"]: ("TIMESHIFT",),
