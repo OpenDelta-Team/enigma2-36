@@ -1260,7 +1260,7 @@ msgid "Automatically start timeshift after"
 msgstr "自动开始时移"
 
 msgid "Automatically turn on external subtitles"
-msgstr "自动打开外部字幕"
+msgstr "自动打开外挂字幕"
 
 msgid "Available format variables"
 msgstr "可用的格式变量"
@@ -1597,7 +1597,7 @@ msgid "Cameroon"
 msgstr "喀麦隆"
 
 msgid "Can be used for different fps between external subtitles and video."
-msgstr "可用于外部字幕和视频之间的不同 fps。"
+msgstr "可用于外挂字幕和视频之间的不同 fps。"
 
 msgid ""
 "Can be used to test defect pixels on TV screen.\n"
@@ -2037,7 +2037,7 @@ msgid "Configure DVB-T"
 msgstr "配置 DVB-T"
 
 msgid "Configure an additional delay to improve external subtitle synchronisation."
-msgstr "配置额外的延迟以改善外部字幕的同步性。"
+msgstr "配置额外的延迟以改善外挂字幕的同步性。"
 
 msgid "Configure an additional delay to improve subtitle synchronisation."
 msgstr "配置额外的延迟以改善字幕同步。"
@@ -3787,13 +3787,13 @@ msgid "External Storage %s"
 msgstr "外部存储器 %s"
 
 msgid "External subtitle color"
-msgstr "外部字幕颜色"
+msgstr "外挂字幕颜色"
 
 msgid "External subtitle dialog colorisation"
-msgstr "外部字幕对话框着色"
+msgstr "外挂字幕对话框着色"
 
 msgid "External subtitle switch fonts"
-msgstr "外部字幕切换字体"
+msgstr "外挂字幕切换字体"
 
 msgid "Externally powered"
 msgstr "外部供电"
@@ -8561,7 +8561,7 @@ msgid "Set fixed"
 msgstr "设置固定地址"
 
 msgid "Set fps for external subtitles"
-msgstr "设置外部字幕的帧率 (fps)"
+msgstr "设置外挂字幕的帧率 (fps)"
 
 msgid "Set if You want see status icons, progress bars or nothing."
 msgstr "设置是否显示状态图标、进度条或无任何显示。"
