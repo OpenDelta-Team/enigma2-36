@@ -99,8 +99,8 @@ class BoxInformation:
 		return True
 
 	def correctValue(self):
-		machine = BoxInfo.getItem("machine")
-		model = str(BoxInfo.getItem("model"))
+		machine = self.boxInfo["machine"]
+		model = str(self.boxInfo["model"])
 		value = ""
 		if machine.startswith("h9combo") and model.startswith("h9twin"):
 			value = model
