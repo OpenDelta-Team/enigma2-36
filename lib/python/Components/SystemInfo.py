@@ -139,7 +139,7 @@ from Tools.Multiboot import getMultibootStartupDevice, getMultibootslots  # This
 
 
 def setBoxInfoItems():
-	model = BoxInfo.getItem("machine")
+	model = BoxInfo.getItem("model")
 	BoxInfo.setItem("InDebugMode", eGetEnigmaDebugLvl() >= 4)
 	BoxInfo.setItem("CommonInterface", model in ("h9combo", "h9combose", "h10", "pulse4kmini") and 1 or eDVBCIInterfaces.getInstance().getNumOfSlots())
 	BoxInfo.setItem("CiAlternativeCaHandling", model in ("pulse4k",  "pulse4kmini"))
