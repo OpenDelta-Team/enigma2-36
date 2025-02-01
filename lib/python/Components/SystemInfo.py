@@ -222,7 +222,7 @@ def setBoxInfoItems():
 	BoxInfo.setItem("canMode12", "%s_4.boxmode" % model in cmdline and cmdline["%s_4.boxmode" % machine] in ("1", "12") and "192M")
 	BoxInfo.setItem("canMultiBoot", getMultibootslots())
 	BoxInfo.setItem("canDualBoot", fileExists("/dev/block/by-name/flag"))
-	BoxInfo.setItem("canFlashWithOfgwrite", not model.startswith("dm")))
+	BoxInfo.setItem("canFlashWithOfgwrite", not (model.startswith("dm")))
 	BoxInfo.setItem("HDRSupport", fileExists("/proc/stb/hdmi/hlg_support_choices") and fileCheck("/proc/stb/hdmi/hlg_support"))
 	BoxInfo.setItem("CanProc", BoxInfo.getItem("HasMMC") and not BoxInfo.getItem("Blindscan_t2_available"))
 	BoxInfo.setItem("HasMultichannelPCM", fileCheck("/proc/stb/audio/multichannel_pcm"))
