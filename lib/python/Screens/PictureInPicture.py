@@ -193,7 +193,7 @@ class PictureInPicture(Screen):
 			return False
 		from Screens.InfoBarGenerics import streamrelay
 		orig_ref = self.resolveAlternatePipService(service)
-		ref = orig_ref and streamrelay.streamrelayChecker(orig_ref)
+		ref = orig_ref and streamrelay.streamrelayChecker(orig_ref)[0]
 		for f in PictureInPicture.playServiceExtensions:
 			ref = f(self, ref)
 		if ref:
