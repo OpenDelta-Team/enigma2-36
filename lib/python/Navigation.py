@@ -134,9 +134,9 @@ class Navigation:
 		if ref and oldref and ref == oldref and not forceRestart:
 			print("[Navigation] ignore request to play already running service(1)")
 			return 1
-        print("[Navigation] playing ref", ref and ref.toString())
+		print("[Navigation] playing ref", ref and ref.toString())
 
-        self.currentlyPlayingServiceReference = ref
+		self.currentlyPlayingServiceReference = ref
 		self.currentlyPlayingServiceOrGroup = ref
 		self.originalPlayingServiceReference = ref
 
@@ -185,7 +185,7 @@ class Navigation:
 			else:
 				playref = ref
 			if self.pnav:
-				if not SystemInfo["FCCactive"]:
+				if not BoxInfo.getItem("FCCactive"):
 					self.pnav.stopService()
 				else:
 					self.skipServiceReferenceReset = True
@@ -193,7 +193,7 @@ class Navigation:
 				self.currentlyPlayingServiceReference = playref
 				playref, is_stream_relay = streamrelay.streamrelayChecker(playref)
 
-				if SystemInfo["FCCactive"] and "%3a//" in ref.toString() and not is_stream_relay:
+				if BoxInfo.getItem("FCCactive") and "%3a//" in ref.toString() and not is_stream_relay:
 					self.pnav.stopService()
 
 				for f in Navigation.playServiceExtensions:
