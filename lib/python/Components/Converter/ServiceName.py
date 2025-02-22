@@ -41,6 +41,7 @@ class ServiceName(Converter):
 	def getText(self):
 		service = self.source.service
 		info = None
+		ref = service
 		if isinstance(service, eServiceReference):
 			info = self.source.info
 		elif isinstance(service, iPlayableServicePtr):
@@ -48,7 +49,7 @@ class ServiceName(Converter):
 			ref = None
 		else: # reference
 			info = service and self.source.info
-			ref = service
+
 		if not info:
 			return ""
 		if self.type == self.NAME:
