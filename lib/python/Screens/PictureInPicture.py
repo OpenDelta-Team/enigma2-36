@@ -64,7 +64,7 @@ class PictureInPicture(Screen):
 		self.dishpipActive = session.instantiateDialog(Dishpip)
 		self.currentService = None
 		self.currentServiceReference = None
-		self.is_current_sr = False
+		self.CurrentIsStreamRelay = False
 		self.pipservice = None
 		session.nav.pnav.clearPiPService()
 
@@ -214,14 +214,14 @@ class PictureInPicture(Screen):
 				ref = eServiceReference("1" + ref.toString()[4:])
 			self.session.nav.pnav.setPiPService(ref)
 			if not self.isPlayableForPipService(ref):
-				is_sr = self.is_current_sr
-				if is_sr:
+				is_stream_relay = self.CurrentIsStreamRelay
+				if is_stream_relay:
 					if self.pipservice:
 						self.pipservice.stop()
-					self.is_current_sr = False
-				if not config.usage.hide_zap_errors.value and not is_sr:
+					self.CurrentIsStreamRelay = False
+				if not config.usage.hide_zap_errors.value and not is_stream_relay:
 					AddPopup(text="PiP...\n" + _("No free tuner!"), type=MessageBox.TYPE_ERROR, timeout=5, id="ZapPipError")
-				return 0 if not is_sr else 2
+				return 0 if not is_stream_relay else 2
 			print("[PictureInPicture] playing pip service", ref and ref.toString())
 
 			self.pipservice = eServiceCenter.getInstance().play(ref)
@@ -232,7 +232,7 @@ class PictureInPicture(Screen):
 				self.currentService = service
 				self.currentServiceReference = ref
 				if ref and ref.getStreamRelay():
-					self.is_current_sr = True
+					self.CurrentIsStreamRelay = True
 				return 1
 			else:
 				self.pipservice = None
