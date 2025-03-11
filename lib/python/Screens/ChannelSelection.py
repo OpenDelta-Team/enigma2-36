@@ -2285,7 +2285,7 @@ class ChannelSelection(ChannelSelectionBase, ChannelSelectionEdit, ChannelSelect
 					if zap_res == 1:
 						self.__evServiceStart()
 						self.showPipzapMessage()
-                        self.setCurrentSelection(nref)
+						self.setCurrentSelection(nref)
 					elif zap_res == 2:
 						self.retryServicePlayTimer = eTimer()
 						self.retryServicePlayTimer.callback.append(boundFunction(self.zap, enable_pipzap = True, checkParentalControl=False))
