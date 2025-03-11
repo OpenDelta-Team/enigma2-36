@@ -212,8 +212,8 @@ class PictureInPicture(Screen):
 			if ref.toString().startswith("4097"):
 				#Change to service type 1 and try to play a stream as type 1
 				ref = eServiceReference("1" + ref.toString()[4:])
-			self.session.nav.pnav.setPiPService(orig_ref)
-			if not self.isPlayableForPipService(orig_ref):
+			self.session.nav.pnav.setPiPService(ref)
+			if not self.isPlayableForPipService(ref):
 				is_sr = self.is_current_sr
 				if is_sr:
 					if self.pipservice:
@@ -227,11 +227,11 @@ class PictureInPicture(Screen):
 			self.pipservice = eServiceCenter.getInstance().play(ref)
 			if self.pipservice and not self.pipservice.setTarget(1, True):
 				if hasattr(self, "dishpipActive") and self.dishpipActive is not None:
-					self.dishpipActive.startPiPService(orig_ref)
+					self.dishpipActive.startPiPService(ref)
 				self.pipservice.start()
 				self.currentService = service
-				self.currentServiceReference = orig_ref
-				if orig_ref and orig_ref.getStreamRelay():
+				self.currentServiceReference = ref
+				if ref and ref.getStreamRelay():
 					self.is_current_sr = True
 				return 1
 			else:
