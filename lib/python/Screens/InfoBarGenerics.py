@@ -750,7 +750,7 @@ class InfoBarNumberZap:
 
 	def keyNumberGlobal(self, number):
 		seekable = self.getSeek()
-		if seekable:
+		if number and seekable:
 			length = seekable.getLength() or (None, 0)
 			if length[1] > 0:
 				key = int(number)
