@@ -49,6 +49,7 @@ class EPGSelection(Screen, HelpableScreen):
 		self.saved_title = None
 		self["Service"] = ServiceEvent()
 		self["Event"] = Event()
+		self.filtering = 0
 		if isinstance(service, str) and eventid is not None:
 			self.type = EPG_TYPE_SIMILAR
 			self.setTitle(_("Similar EPG"))
@@ -73,7 +74,6 @@ class EPGSelection(Screen, HelpableScreen):
 			self.currentService = ServiceReference(service)
 			self.zapFunc = zapFunc
 			self.sort_type = 0
-			self.filtering = 0
 			self.original_cfg_filter_start = config.epg.filter_start.value[:]
 			self.original_cfg_filter_end = config.epg.filter_end.value[:]
 			self.setSortDescription()
@@ -327,8 +327,9 @@ class EPGSelection(Screen, HelpableScreen):
 			self.session.openWithCallback(save, MessageBox, _("Set %s as default?") % self.getTimespanText(), type=MessageBox.TYPE_YESNO, simple=True)
 
 	def restoreFilterValues(self):
-		config.epg.filter_start.value = self.original_cfg_filter_start
-		config.epg.filter_end.value = self.original_cfg_filter_end
+	    if hasattr(self, "original_cfg_filter_start") and hasattr(self, "original_cfg_filter_end"):
+		    config.epg.filter_start.value = self.original_cfg_filter_start
+		    config.epg.filter_end.value = self.original_cfg_filter_end
 
 	def filterShiftTimespan(self, filter_side, delta):
 		def shiftHour(clock, delta):
