@@ -463,7 +463,6 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 
 	png_read_info(png_ptr, info_ptr);
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
-	int pixel_cnt = width * height;
 
 	if (!forceRGB && (color_type == PNG_COLOR_TYPE_GRAY || color_type & PNG_COLOR_MASK_PALETTE))
 	{
@@ -552,47 +551,7 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 				png_read_row(png_ptr, fbptr, NULL);
 		}
 		png_read_end(png_ptr, info_ptr);
-		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-
-		if (bit_depth == 32 && filepara->transparent)
-		{
-			filepara->bits = 32;
-			filepara->pic_buffer = pic_buffer;
-		}
-		else if (bit_depth == 32)
-		{
-			unsigned char *pic_buffer24 = new unsigned char[pixel_cnt * 3];
-			if (!pic_buffer24)
-			{
-				eDebug("[ePicLoad] Error malloc");
-				delete[] pic_buffer;
-				return;
-			}
-
-			unsigned char *src = pic_buffer;
-			unsigned char *dst = pic_buffer24;
-			int bg_r = (background >> 16) & 0xFF;
-			int bg_g = (background >> 8) & 0xFF;
-			int bg_b = background & 0xFF;
-			for (unsigned int i = 0; i < pixel_cnt; i++)
-			{
-				int r = (int)*src++;
-				int g = (int)*src++;
-				int b = (int)*src++;
-				int a = (int)*src++;
-
-				*dst++ = ((r - bg_r) * a) / 255 + bg_r;
-				*dst++ = ((g - bg_g) * a) / 255 + bg_g;
-				*dst++ = ((b - bg_b) * a) / 255 + bg_b;
-			}
-			delete[] pic_buffer;
-			filepara->pic_buffer = pic_buffer24;
-		}
-		else
-			filepara->pic_buffer = pic_buffer;
-		filepara->bits = 24;
 	}
-	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 }
 
 //-------------------------------------------------------------------
@@ -1065,7 +1024,7 @@ void ePicLoad::decodeThumb()
 	{
 		case F_PNG:	png_load(m_filepara, m_conf.background, true);
 				break;
-		case F_JPEG:	m_filepara->pic_buffer = jpeg_load(m_filepara->file, &m_filepara->ox, &m_filepara->oy, m_filepara->max_x, m_filepara->max_y);
+		case F_JPEG: m_filepara->pic_buffer = jpeg_load(m_filepara->file, &m_filepara->ox, &m_filepara->oy, m_filepara->max_x, m_filepara->max_y);
 				break;
 		case F_BMP:	m_filepara->pic_buffer = bmp_load(m_filepara->file, &m_filepara->ox, &m_filepara->oy);
 				break;
@@ -1114,41 +1073,6 @@ void ePicLoad::decodeThumb()
 				eDebug("[ePicLoad] getThumb: error saving cachefile");
 		}
 	}
-}
-
-void ePicLoad::resizePic()
-{
-	int imx, imy;
-
-	if (m_conf.aspect_ratio == 0)  // do not keep aspect ration but just fill the destination area
-	{
-		imx = m_filepara->max_x;
-		imy = m_filepara->max_y;
-	}
-	else if ((m_conf.aspect_ratio * m_filepara->oy * m_filepara->max_x / m_filepara->ox) <= m_filepara->max_y)
-	{
-		imx = m_filepara->max_x;
-		imy = (int)(m_conf.aspect_ratio * m_filepara->oy * m_filepara->max_x / m_filepara->ox);
-	}
-	else
-	{
-		imx = (int)((1.0/m_conf.aspect_ratio) * m_filepara->ox * m_filepara->max_y / m_filepara->oy);
-		imy = m_filepara->max_y;
-	}
-
-	if (m_filepara->bits == 8)
-		m_filepara->pic_buffer = simple_resize_8(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
-	else if (m_conf.resizetype && m_filepara->bits < 32)
-		m_filepara->pic_buffer = color_resize(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
-	else if (m_conf.resizetype)
-		m_filepara->pic_buffer = color_resize_32(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
-	else if (m_filepara->bits < 32)
-		m_filepara->pic_buffer = simple_resize_24(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
-	else
-		m_filepara->pic_buffer = simple_resize_32(m_filepara->pic_buffer, m_filepara->ox, m_filepara->oy, imx, imy);
-
-	m_filepara->ox = imx;
-	m_filepara->oy = imy;
 }
 
 void ePicLoad::gotMessage(const Message &msg)
