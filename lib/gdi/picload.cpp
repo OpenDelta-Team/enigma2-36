@@ -463,6 +463,7 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 
 	png_read_info(png_ptr, info_ptr);
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
+	int pixel_cnt = width * height;
 
 	if (!forceRGB && (color_type == PNG_COLOR_TYPE_GRAY || color_type & PNG_COLOR_MASK_PALETTE))
 	{
@@ -553,12 +554,12 @@ static void png_load(Cfilepara* filepara, int background, bool forceRGB=false)
 		png_read_end(png_ptr, info_ptr);
 		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 
-		if (bpp == 4 && filepara->transparent)
+		if (bit_depth == 32 && filepara->transparent)
 		{
 			filepara->bits = 32;
 			filepara->pic_buffer = pic_buffer;
 		}
-		else if (bpp == 4)
+		else if (bit_depth == 32)
 		{
 			unsigned char *pic_buffer24 = new unsigned char[pixel_cnt * 3];
 			if (!pic_buffer24)
