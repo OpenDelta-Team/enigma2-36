@@ -772,16 +772,16 @@ class MovieSelection(Screen, HelpableScreen, SelectionEventInfo, InfoBarBase, Pr
 			a()
 
 	def btn_red(self):
-		self._callButton(config.movielist.btn_red.value)
+		hasattr(config.movielist, "btn_red") and self._callButton(config.movielist.btn_red.value)
 
 	def btn_green(self):
-		self._callButton(config.movielist.btn_green.value)
+		hasattr(config.movielist, "btn_green") and self._callButton(config.movielist.btn_green.value)
 
 	def btn_yellow(self):
-		self._callButton(config.movielist.btn_yellow.value)
+		hasattr(config.movielist, "btn_yellow") and self._callButton(config.movielist.btn_yellow.value)
 
 	def btn_blue(self):
-		self._callButton(config.movielist.btn_blue.value)
+		hasattr(config.movielist, "btn_blue") and self._callButton(config.movielist.btn_blue.value)
 
 	def btn_radio(self):
 		self._callButton(config.movielist.btn_radio.value)
