@@ -30,11 +30,37 @@ class About(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.setTitle(_("About"))
+
+		self["AboutScrollLabel"] = ScrollLabel()
+		self["key_green"] = Button(_("Translations"))
+		self["key_red"] = Button(_("Latest Commits"))
+		self["key_yellow"] = Button(_("Troubleshoot"))
+		self["key_blue"] = Button(_("Memory Info"))
+		self.cpuTxt = _("CPU: ")
+		self.uptimeFmt = _("Uptime: %s\n")
+
+		self["actions"] = ActionMap(["ColorActions", "SetupActions"],
+			{
+				"cancel": self.close,
+				"ok": self.close,
+				"red": self.showCommits,
+				"green": self.showTranslationInfo,
+				"blue": self.showMemoryInfo,
+				"yellow": self.showTroubleshoot,
+				"0": self.refreshParsInAboutText,
+				"up": self["AboutScrollLabel"].pageUp,
+				"down": self["AboutScrollLabel"].pageDown,
+				"left": self["AboutScrollLabel"].pageUp,
+				"right": self["AboutScrollLabel"].pageDown
+			})
+		self.fillParameters()
+
+	def fillParameters(self):
 		hddsplit = parameters.get("AboutHddSplit", 1)
 
 		AboutText = _("Hardware: ") + about.getHardwareTypeString() + "\n"
 		cpu = about.getCPUInfoString()
-		AboutText += _("CPU: ") + cpu + "\n"
+		AboutText += self.cpuTxt + cpu + "\n"
 		AboutText += _("Image: ") + about.getImageTypeString() + "\n"
 		AboutText += _("OE Version: ") + about.getOEVersionString() + "\n"
 		AboutText += _("Build date: ") + about.getBuildDateString() + "\n"
@@ -77,7 +103,7 @@ class About(Screen):
 		AboutText += _("Python version: ") + about.getPythonVersionString() + "\n"
 
 		AboutText += _("Enigma (re)starts: %d\n") % config.misc.startCounter.value
-		AboutText += _("Uptime: %s\n") % about.getBoxUptime()
+		AboutText += self.uptimeFmt % about.getBoxUptime()
 		AboutText += _("Enigma debug level: %d\n") % eGetEnigmaDebugLvl()
 
 		fp_version = getFPVersion()
@@ -125,25 +151,22 @@ class About(Screen):
 			address = config.hdmicec.fixed_physical_address.value if config.hdmicec.fixed_physical_address.value != "0.0.0.0" else _("not set")
 			AboutText += "\n\n" + _("HDMI-CEC address") + ": " + address
 
-		self["AboutScrollLabel"] = ScrollLabel(AboutText)
-		self["key_green"] = Button(_("Translations"))
-		self["key_red"] = Button(_("Latest Commits"))
-		self["key_yellow"] = Button(_("Troubleshoot"))
-		self["key_blue"] = Button(_("Memory Info"))
+		self["AboutScrollLabel"].setText(AboutText)
 
-		self["actions"] = ActionMap(["ColorActions", "SetupActions", "DirectionActions"],
-			{
-				"cancel": self.close,
-				"ok": self.close,
-				"red": self.showCommits,
-				"green": self.showTranslationInfo,
-				"blue": self.showMemoryInfo,
-				"yellow": self.showTroubleshoot,
-				"up": self["AboutScrollLabel"].pageUp,
-				"down": self["AboutScrollLabel"].pageDown,
-				"left": self["AboutScrollLabel"].pageUp,
-				"right": self["AboutScrollLabel"].pageDown
-			})
+	def refreshParsInAboutText(self):
+		text = self["AboutScrollLabel"].getText()
+
+		start = text.find(self.cpuTxt)
+		if start != -1:
+			end = text.find("\n", start)
+			text = text[:start] + self.cpuTxt + about.getCPUInfoString() + text[end:]
+
+		start = text.find(self.uptimeFmt.split('%')[0])
+		if start != -1:
+			end = text.find("\n", start)
+			text = text[:start] + self.uptimeFmt % about.getBoxUptime() + text[end + 1:]
+
+		self["AboutScrollLabel"].setText(text)
 
 	def showTranslationInfo(self):
 		self.session.open(TranslationInfo)
