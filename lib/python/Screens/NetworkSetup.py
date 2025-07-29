@@ -553,20 +553,21 @@ class AdapterSetupConfiguration(Screen, HelpableScreen):
 
 	def queryWirelessDevice(self, iface):
 		try:
-			from pythonwifi.iwlibs import Wireless
+			from wifi.scan import Cell
 			import errno
 		except ImportError:
+			print("[AdapterSetupConfiguration] python3-wifi not installed!")
 			return False
 		else:
 			try:
-				ifobj = Wireless(iface)  # a Wireless NIC Object
-				wlanresponse = ifobj.getAPaddr()
-			except IOError as xxx_todo_changeme:
-				(error_no, error_str) = xxx_todo_changeme.args
+				os.system("ifconfig %s up" % iface)
+				wlanresponse = list(Cell.all(iface))
+			except (IOError, OSError) as err:
+				(error_no, error_str) = err.args
 				if error_no in (errno.EOPNOTSUPP, errno.ENODEV, errno.EPERM):
 					return False
 				else:
-					print("error: ", error_no, error_str)
+					print("[AdapterSetupConfiguration] error: ", error_no, error_str)
 					return True
 			else:
 				return True
