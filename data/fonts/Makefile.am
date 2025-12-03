@@ -14,7 +14,6 @@ dist_install_DATA = \
     error.ttf \
     nmsbdh.ttf \
     tiny.ttf \
-    venus.ttf \
 	nmsbd.ttf \
 	LiberationSans-Bold.ttf \
 	LiberationSans-BoldItalic.ttf \
